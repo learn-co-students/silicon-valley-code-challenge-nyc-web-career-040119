@@ -32,32 +32,20 @@ class VentureCapitalist
   end
 
   def funding_rounds
-    FundingRound.all.select do |round|
-      round.venture_capitalist == self
-    end
+    FundingRound.all.select {|round|round.venture_capitalist == self}
   end
 
   def portfolio
-    funding_rounds.map do |fund|
-      fund.startup
-    end
+    funding_rounds.map {|fund|fund.startup}
   end
 
   def biggest_investment
-    big_investment = self.funding_rounds.map do |round|
-        round.investment
-    end.max
-    self.funding_rounds.select do |round|
-      round.investment == big_investment
-    end
+    # big_investment = self.funding_rounds.map {|round| round.investment}.max
+    self.funding_rounds.select {|round|round.investment == self.funding_rounds.map {|round| round.investment}.max}
   end
 
   def invested(domain)
-    self.funding_rounds.count do |round|
-      #binding.pry
-      round.startup.domain == domain
-    end
+    self.funding_rounds.count{|round|round.startup.domain == domain}
   end
-
 
 end
