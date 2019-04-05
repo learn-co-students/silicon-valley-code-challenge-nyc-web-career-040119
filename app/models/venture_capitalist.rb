@@ -22,4 +22,30 @@ class VentureCapitalist
   def offer_contract(startup, type, investment)
     FundingRound.new(startup, self, type, investment)
   end
+
+  def funding_rounds
+    FundingRound.all.select do |round|
+      round.venture_capitalist == self
+    end
+  end
+
+  def portfolio
+    self.funding_rounds.map do |round|
+      round.startup
+    end.uniq
+  end
+
+  def biggest_investment
+    self.funding_rounds.max do |round|
+      round.investment
+    end
+  end
+
+  def invested(domain)
+    self.funding_rounds.select do |round|
+      round.startup.domain == domain
+    end.sum do |round|
+      round.investment
+    end
+  end
 end

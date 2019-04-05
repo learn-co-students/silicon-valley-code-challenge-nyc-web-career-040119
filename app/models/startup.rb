@@ -38,27 +38,26 @@ class Startup
     FundingRound.new(self, venture_capitalist, type, investment)
   end
 
-  def find_all_rounds
+  def funding_rounds
     FundingRound.all.select do |round|
       round.startup == self
     end
   end
 
   def num_funding_rounds
-    self.find_all_rounds.length
+    self.funding_rounds.length
   end
 
   def total_funds
     # FundingRound.all.select do |round|
     #   round.startup == self
-    self.find_all_rounds.sum do |fund|
+    self.funding_rounds.sum do |fund|
       fund.investment
     end
   end
 
   def investors
-    self.find_all_rounds.map do |round|
-      binding.pry
+    self.funding_rounds.map do |round|
       round.venture_capitalist
     end.uniq
   end

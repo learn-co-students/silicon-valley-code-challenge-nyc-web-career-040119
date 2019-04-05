@@ -23,7 +23,7 @@ microsoft.sign_contract(goldfinger, "motion tracker", 1000000)
 
 jeff.offer_contract(microsoft, "Mind Control", 2500000000)
 
-
+jeff.invested("www.facebook.com")
 
 binding.pry
 0 #leave this here to ensure binding.pry isn't the last line
