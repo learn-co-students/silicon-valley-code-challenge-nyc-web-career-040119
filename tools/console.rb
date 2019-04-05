@@ -141,6 +141,35 @@ donut_company.investors
 xyz_company.big_investors
 donut_company.big_investors
 
+# - `VentureCapitalist#offer_contract`
+#   - given a **startup object**, type of investment (as a string), and the amount invested (as a float), creates a new funding round and associates it with that startup and venture capitalist.
+
+subway_contract = subway_investment.offer_contract(subway_investment, "Series A", 3000.0, bikers_company)
+
+big_deal_contract = big_deal_investment.offer_contract(big_deal_investment, "Series B", 5000.0, donut_company)
+
+# - `VentureCapitalist#funding_rounds`
+#   - returns an array of all funding rounds for that venture capitalist
+
+subway_investment.funding_rounds
+big_deal_investment.funding_rounds
+
+# - `VentureCapitalist#portfolio`
+#   - Returns a **unique** list of all startups this venture capitalist has funded
+
+subway_investment.portfolio
+big_deal_investment.portfolio
+
+# - `VentureCapitalist#biggest_investment`
+#   - returns the largest funding round given by this venture capitalist
+subway_investment.biggest_investment
+big_deal_investment.biggest_investment
+
+# - `VentureCapitalist#invested`
+#   - given a **domain string**, returns the total amount invested in that domain
+subway_investment.invested("Bike Manufacturing")
+big_deal_investment.invested("Artificial Intelligent Donuts")
+
 binding.pry
 
 0 #leave this here to ensure binding.pry isn't the last line
