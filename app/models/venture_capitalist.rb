@@ -43,6 +43,21 @@ class VentureCapitalist
     end
   end
 
+  def biggest_investment
+    big_investment = self.funding_rounds.map do |round|
+        round.investment
+    end.max
+    self.funding_rounds.select do |round|
+      round.investment == big_investment
+    end
+  end
+
+  def invested(domain)
+    self.funding_rounds.count do |round|
+      #binding.pry
+      round.startup.domain == domain
+    end
+  end
 
 
 end
