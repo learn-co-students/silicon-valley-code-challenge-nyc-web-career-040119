@@ -1,7 +1,7 @@
 class Startup
 
   attr_reader :founder, :name, :domain
-
+   
   @@all = []
 
   def initialize(name, founder)
@@ -23,10 +23,26 @@ class Startup
   end
 
   def sign_contract(vc, type, amount)
-    FundingRound.new(self, vc)
+    fr = FundingRound.new(self, vc)
+    fr.type = type
+    fr.investment = amount
   end
 
-  private
+  def num_of_funding_rounds
+    FundingRound.all.select {|fr| fr.startup == self}.length
+  end
+
+  def investors
+    FundingRound.all.select {|fr| fr.startup == self}.map {|fr| fr.venture_capitalist}.uniq
+  end
+
+  def big_investors
+    investors.select {|investor| VentureCapitalist.tres_commas_club.include?(investor)}.uniq
+  end
+
+  def total_funds
+    FundingRound.all.select {|fr| fr.startup == self}.map {|fr| fr.investment}.sum
+  end
 
   def pivot(domain, name)
     @domain = domain
