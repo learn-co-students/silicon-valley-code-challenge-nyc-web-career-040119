@@ -3,9 +3,20 @@ require_relative '../config/environment.rb'
 def reload
   load 'config/environment.rb'
 end
-# Insert code here to run before hitting the binding.pry
-# This is a convenient place to define variables and/or set up new object instances,
-# so they will be available to test and play around with in your console
+
+crapco = Startup.new("Crap", "Mark Z.", "www.crap-comp.com")
+instagram = Startup.new("Instagram", "blah", "www.instagram.com")
+facebook = Startup.new("Facebook", "Mark Z.", "www.facebook.com")
+
+soyeong = VentureCapitalist.new("Soyeong Oh", 50000000000)
+shao = VentureCapitalist.new("ShaoBo Fang", 100000)
+sam = VentureCapitalist.new("Sam Doe", 10000000000000)
+
+fr1 = FundingRound.new(instagram, soyeong, "Series A", 30000)
+fr2 = FundingRound.new(facebook, shao, "Series A", 10000)
+fr3 = FundingRound.new(facebook, soyeong, "Series B", 400000)
+fr4 = FundingRound.new(facebook, soyeong, "Series C", 400000)
+fr5 = FundingRound.new(facebook, sam, "Series C", 800000)
 
 binding.pry
 0 #leave this here to ensure binding.pry isn't the last line
