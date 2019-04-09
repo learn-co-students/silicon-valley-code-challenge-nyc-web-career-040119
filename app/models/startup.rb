@@ -1,25 +1,8 @@
 require 'pry'
 
-# - `Startup#name`
-#   - returns a **string** that is the startup's name
-# - `Startup#founder`
-#   - returns a **string** that is the founder's name
-#   - Once a startup is created, the founder cannot be changed.
-# - `Startup#domain`
-#   - returns a **string** that is the startup's domain
-#   - Once a startup is created, the domain cannot be changed.
-# - `Startup#pivot`
-#   - given a string of a **domain** and a string of a **name**, change the domain and name of the startup
-# - `Startup.all`
-#   - should return **all** of the startup instances
-# - `Startup.find_by_founder`
-#   - given a string of a **founder's name**, returns the **first startup** whose founder's name matches
-# - `Startup.domains`
-#   - should return an **array** of all of the different startup domains
-
 class Startup
-  attr_accessor :name
-  attr_reader :founder, :domain
+  attr_reader :founder
+  attr_accessor :domain, :name
 
   @@all = []
 
@@ -30,82 +13,61 @@ class Startup
     @@all << self
   end
 
+  # INSTANCE METHODS
   def pivot(domain, name)
-    @name = name
-    @domain = domain
+    self.domain = domain
+    self.name = name
   end
 
+  def sign_contract(venture_capitalist, type, investment)
+    FundingRound.new(self, venture_capitalist, type, investment)
+  end
+
+# HELPER ##
+  def total_num_of_funding_rounds
+    FundingRound.all.select do |fr|
+      fr.startup == self
+    end
+  end
+###
+
+  def funding_rounds
+    total_num_of_funding_rounds.count
+  end
+
+  def total_funds
+    total_num_of_funding_rounds.map do |fr|
+      fr.investment
+    end.sum
+      # binding.pry
+  end
+
+  def investors
+    total_num_of_funding_rounds.map do |fr|
+      fr.venture_capitalist
+    end.uniq
+  end
+
+  def big_investors
+    investors.select do |fr|
+      # binding.pry
+      fr.total_worth > 1000000000
+    end.uniq
+  end
+  # CLASS METHODS
   def self.all
     @@all
   end
 
   def self.find_by_founder(founder)
-    @@all.find do |startup|
-      startup.founder == founder
-      # binding.pry
+    self.all.find do |startups|
+      startups.founder == founder
     end
   end
 
   def self.domains
-    @@all.map do |startup|
-      startup.domain
+    self.all.map do |startups|
+      startups.domain
     end
   end
-
-
-# Startup#sign_contract
-# given a venture capitalist object, type of investment (as a string), and the amount invested (as a float), creates a new funding round and associates it with that startup and venture capitalist.
-  def sign_contract(venture_capitalist, type, investment, startup)
-    FundingRound.new(venture_capitalist, type, investment, startup)
-  end
-
-# Startup#num_funding_rounds
-# Returns the total number of funding rounds that the startup has gotten
-  def num_funding_rounds
-    FundingRound.all.count do |rounds|
-      rounds.startup == self && rounds.type
-    end
-  end
-
-# Startup#total_funds
-# Returns the total sum of investments that the startup has gotten
-  def total_funds
-    startup_round = FundingRound.all.map do |rounds|
-      rounds.startup == self && rounds.investment
-    end
-
-    startup_funds = startup_round.select do |funds|
-      funds.class == Float
-    end
-
-    total_funds = startup_funds.inject(:+)
-
-  end
-
-# Startup#investors
-# Returns a unique array of all the venture capitalists that have invested in this company
-  def investors
-    FundingRound.all.map do |rounds|
-      if rounds.startup == self
-        rounds.venture_capitalist.name
-      end
-    end.compact
-  end
-
-
-# Startup#big_investors
-# Returns a unique array of all the venture capitalists that have invested in this company and are in the Trés Commas club
-
-  def big_investors
-    #find the vc that is funding the startup
-    #check if the vc is tres_commas_club
-    #return vc name in array if true
-
-    VentureCapitalist.tres_commas_club.map do |vc|
-      investors.select do |investor|
-        investor == vc.name
-      end
-    end.flatten
-  end
-  
 end
