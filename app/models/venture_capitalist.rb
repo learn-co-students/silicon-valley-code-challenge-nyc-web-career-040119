@@ -44,6 +44,7 @@ class VentureCapitalist
     self.funding_rounds.select {|round|round.investment == self.funding_rounds.map {|round| round.investment}.max}
   end
 
+
   def invested(domain)
     self.funding_rounds.count{|round|round.startup.domain == domain}
   end
